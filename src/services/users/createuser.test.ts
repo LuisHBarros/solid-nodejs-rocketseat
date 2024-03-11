@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { expect, describe, it, beforeEach } from "vitest";
 import { RegisterUserService } from "./createUser";
-import { compare } from "bcrypt";
 import { InMemoryUsersRepository } from "@/repositories/inMemory/InMemoryUsersRepository";
 import { UserAlreadyExistsError } from "@/errors/UserAlreadyExistsError";
+import { compare } from "bcryptjs";
 //unit test
 
 describe("Create user service", () => {

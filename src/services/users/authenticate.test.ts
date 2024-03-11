@@ -1,12 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { expect, describe, it, beforeEach } from "vitest";
-import { RegisterUserService } from "./createUser";
-import { compare, hash } from "bcrypt";
+import { hash } from "bcryptjs";
 import { InMemoryUsersRepository } from "@/repositories/inMemory/InMemoryUsersRepository";
-import { UserAlreadyExistsError } from "@/errors/UserAlreadyExistsError";
 import { AuthenticateService } from "./authenticate";
 import { InvalidCredentialsException } from "@/errors/InvalidCredentialsError";
-import { ResourceNotExists } from "@/errors/ResourceNotExists";
 //unit test
 
 describe("Authenticate service", () => {
@@ -31,8 +28,9 @@ describe("Authenticate service", () => {
 
     expect(user).have.property("id");
   });
+
   it("should not be able to authenticate with wrong email", async () => {
-    expect(
+    await expect(() =>
       autenticateService.execute({
         email: "test@example.com",
         password: "123456",

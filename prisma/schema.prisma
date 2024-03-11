@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+
+  url = "file:C:/Users/luis.barros/Documents/rocketseat/Node/solid-nodejs-rocketseat/dev.db"
 }
 
 model User {

@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { expect, describe, it, beforeEach } from "vitest";
-import { hash } from "bcrypt";
+
 import { InMemoryUsersRepository } from "@/repositories/inMemory/InMemoryUsersRepository";
 import { InvalidCredentialsException } from "@/errors/InvalidCredentialsError";
 import { GetUserProfileService } from "./getUserProfile";
 import { ResourceNotExists } from "@/errors/ResourceNotExists";
+import { hash } from "bcryptjs";
 //unit test
 
 describe("Get user profile", () => {
