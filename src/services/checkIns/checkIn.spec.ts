@@ -1,10 +1,10 @@
 import { InMemoryCheckInsRepository } from "@/repositories/inMemory/InMemoryCheckInsRepository";
 import { CheckInService } from "./checkIn";
 import { beforeEach, afterEach, describe, expect, it, vi } from "vitest";
-import {} from "node:test";
 import { InMemoryGymRepository } from "@/repositories/inMemory/InMemoryGymsRepository";
 import { Gym } from "@prisma/client";
 import { MaxDistanceError } from "@/errors/MaxDistanceError";
+import { MaxCheckInsError } from "@/errors/MaxCheckInsError";
 
 let checkInRepository = new InMemoryCheckInsRepository();
 let gymRepository = new InMemoryGymRepository();
@@ -55,7 +55,7 @@ describe("Check In Service", () => {
         userLatitude: 0.0,
         userLongitude: 0.0,
       })
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(MaxCheckInsError);
   });
 
   it("should no be able to check in when the user is far away from the gym", async () => {
@@ -63,8 +63,8 @@ describe("Check In Service", () => {
       service.execute({
         gym_id: gym.id,
         user_id: "user-01",
-        userLatitude: 0.0,
-        userLongitude: 1,
+        userLatitude: 0.8,
+        userLongitude: 0.5,
       })
     ).rejects.toBeInstanceOf(MaxDistanceError);
   });

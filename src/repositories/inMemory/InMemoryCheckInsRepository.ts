@@ -8,19 +8,26 @@ export class InMemoryCheckInsRepository implements ICheckInsRepository {
   constructor() {
     this.items = new Array<CheckIn>();
   }
-  async findByUserIdOnDate(userId: string, date: Date) {
-    const startOfTheDay = dayjs(date).startOf("date");
-    const endOfTheDay = dayjs(date).endOf("date");
-    const checkInOnSameDate = this.items.find((checkIn) => {
-      const checkInDate = dayjs(checkIn.created_at);
-      const isOnSameDate =
-        checkInDate.isAfter(startOfTheDay) && checkInDate.isBefore(endOfTheDay);
-
-      return checkIn.user_id === userId && isOnSameDate;
-    });
-    if (checkInOnSameDate) return checkInOnSameDate;
-    return null;
+  async countCheckInsByUserId(userId: string): Promise<number> {
+    const checkIns = this.items.filter((checkIn) => checkIn.user_id === userId);
+    return checkIns.length;
   }
+  async findByUserIdOnDate(
+    userId: string,
+    date: Date
+  ): Promise<CheckIn | null> {
+    const checkIn = this.items.find(
+      (checkIn) =>
+        checkIn.user_id === userId &&
+        dayjs(checkIn.created_at).isSame(date, "day")
+    );
+    return checkIn || null;
+  }
+  async findManyByUserId(userId: string): Promise<CheckIn[]> {
+    const checkIns = this.items.filter((checkIn) => checkIn.user_id === userId);
+    return checkIns;
+  }
+
   async create(data: Prisma.CheckInUncheckedCreateInput) {
     const checkIn = {
       id: randomUUID(),

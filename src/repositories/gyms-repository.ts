@@ -1,6 +1,6 @@
-import { Gym } from "@prisma/client";
+import { Gym, Prisma } from "@prisma/client";
 
 export interface IGymRepository {
   findById(id: string): Promise<Gym | null>;
-  // create(data: Prisma.GymUncheckedCreateInput): Promise<Gym>;
+  create(data: Prisma.GymUncheckedCreateInput): Promise<Gym>;
 }
